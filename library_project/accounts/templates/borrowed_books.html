@@ -1,0 +1,89 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+  <div class="profile-data">
+    <h2 class="text-center" style="padding-bottom: 20px;">Профиль пользователя: {{ user.first_name }} {{ user.last_name }}</h1>
+
+      <table class="table  table-striped" style="margin-bottom: 40px;">
+        <tbody>
+          <tr>
+            <td>Логин (Имя пользователя)</td>
+            <td>{{ user.username }}</td>
+          </tr>
+          <tr>
+            <td>Электронная почта</td>
+            <td>{{ user.email }}</td>
+          </tr>
+          <tr>
+            <td>Телефон</td>
+            <td>{{ profile.phone }}</td>
+          </tr>
+          <tr>
+            <td>Адрес</td>
+            <td>{{ profile.address }}</td>
+          </tr>
+          <tr>
+            <td>Номер читательского билета</td>
+            <td>{{ profile.reader_card }} - {{ user.username }}</td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+  <h3 class="text-center" style="padding-bottom: 20px;">Книги на руках</h2>
+  {% if messages %}
+  <div class="alert alert-dismissible fade show" role="alert">
+    {% for message in messages %}
+      <p class="{% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</p>
+    {% endfor %}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  {% endif %}
+  <table class="table" style="margin-bottom: 40px;">
+    <thead>
+      <tr>
+        <th scope="col">Книга</th>
+        <th scope="col">Дата возврата</th>
+        <th scope="col">Продлить дату возврата на 7 дней</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for book in borrowed_books %}
+        <tr>
+          <td>{{ book.book.title }} - {{ book.book.author }}</td>
+          <td>{{ book.return_date }}</td>
+          <td>
+            {% if book.can_renew %}
+              <form method="post" action="{% url 'renew-book' pk=book.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">Продлить</button>
+              </form>
+            {% else %}
+              <span class="badge badge-secondary">Продление недоступно</span><br>
+              <span>Вы уже продлили дату возврата.<br>Пожалуйста, верните книгу вовремя.</span>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <h3 class="text-center" style="padding-bottom: 20px;">История заимствований</h2>
+  <table class="table" style="border-radius: 8px 8px 0 0; margin-bottom: 40px;">
+    <thead>
+      <tr>
+        <th scope="col">Книги
+          
+        </th>
+        <th scope="col">Дата заимствования</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for book in all_borrowed_books %}
+        <tr>
+          <td>{{ book.book.title }} - {{ book.book.author }}</td>
+          <td>{{ book.borrowed_date }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

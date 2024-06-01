@@ -1,0 +1,99 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+  <h2 class="text-center" style="padding-bottom: 20px; font-weight: bold;">РЕГИСТРАЦИЯ ЧИТАТЕЛЯ В СИСТЕМЕ</h2>
+  <p class="text-center" style="padding-bottom: 20px; font-weight: bold;">Все поля обязательны для заполнения</p>
+  <form method="post" class="form-group">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="{{ form.username.id_for_label }}" class="form-label">{{ form.username.label }}</label>
+      {{ form.username }}
+      {% if form.username.help_text %}
+      <small class="form-text text-muted">{{ form.username.help_text }}</small>
+      {% endif %}
+      {% if form.username.errors %}
+        <div class="alert alert-danger">{{ form.username.errors.as_text }}</div>
+      {% endif %}
+    </div>
+    <div class="mb-3">
+      <label for="{{ form.email.id_for_label }}" class="form-label">{{ form.email.label }}</label>
+      {{ form.email }}
+      {% if form.email.help_text %}
+      <small class="form-text text-muted">{{ form.email.help_text }}</small>
+      {% endif %}
+      {% if form.email.errors %}
+        <div class="alert alert-danger">{{ form.email.errors.as_text }}</div>
+      {% endif %}
+    </div>
+    <div class="mb-3">
+      <label for="{{ form.password1.id_for_label }}" class="form-label">{{ form.password1.label }}</label>
+      {{ form.password1 }}
+      {% if form.password1.help_text %}
+      <small class="form-text text-muted">{{ form.password1.help_text }}</small>
+      {% endif %}
+      {% if form.password1.errors %}
+        <div class="alert alert-danger">{{ form.password1.errors.as_text }}</div>
+      {% endif %}
+    </div>
+    <div class="mb-3">
+      <label for="{{ form.password2.id_for_label }}" class="form-label">{{ form.password2.label }}</label>
+      {{ form.password2 }}
+      {% if form.password2.help_text %}
+      <small class="form-text text-muted">{{ form.password2.help_text }}</small>
+      {% endif %}
+      {% if form.password2.errors %}
+        <div class="alert alert-danger">{{ form.password2.errors.as_text }}</div>
+      {% endif %}
+    </div>
+    <div class="mb-3">
+      <label for="{{ form.first_name.id_for_label }}" class="form-label">{{ form.first_name.label }}</label>
+      {{ form.first_name }}
+      {% if form.first_name.help_text %}
+      <small class="form-text text-muted">{{ form.first_name.help_text }}</small>
+      {% endif %}
+      {% if form.first_name.errors %}
+        <div class="alert alert-danger">{{ form.first_name.errors.as_text }}</div>
+      {% endif %}
+    </div>
+    <div class="mb-3">
+      <label for="{{ form.last_name.id_for_label }}" class="form-label">{{ form.last_name.label }}</label>
+      {{ form.last_name }}
+      {% if form.last_name.help_text %}
+      <small class="form-text text-muted">{{ form.last_name.help_text }}</small>
+      {% endif %}
+      {% if form.last_name.errors %}
+        <div class="alert alert-danger">{{ form.last_name.errors.as_text }}</div>
+      {% endif %}
+    </div>
+    <div class="mb-3">
+      <label for="{{ form.phone.id_for_label }}" class="form-label">{{ form.phone.label }}</label>
+      {{ form.phone }}
+      {% if form.phone.help_text %}
+      <small class="form-text text-muted">{{ form.phone.help_text }}</small>
+      {% endif %}
+      {% if form.phone.errors %}
+        <div class="alert alert-danger">{{ form.phone.errors.as_text }}</div>
+      {% endif %}
+    </div>
+    <div class="mb-3">
+      <label for="{{ form.address.id_for_label }}" class="form-label">{{ form.address.label }}</label>
+      {{ form.address }}
+      {% if form.address.help_text %}
+      <small class="form-text text-muted">{{ form.address.help_text }}</small>
+      {% endif %}
+      {% if form.address.errors %}
+        <div class="alert alert-danger">{{ form.address.errors.as_text }}</div>
+      {% endif %}
+    </div>
+    <div class="mb-3">
+      <label for="{{ form.reader_card.id_for_label }}" class="form-label">{{ form.reader_card.label }}</label>
+      {{ form.reader_card }}
+      {% if form.reader_card.help_text %}
+      <small class="form-text text-muted">{{ form.reader_card.help_text }}</small>
+      {% endif %}
+      {% if form.reader_card.errors %}
+        <div class="alert alert-danger">{{ form.reader_card.errors.as_text }}</div>
+      {% endif %}
+    </div>
+    <button type="submit" class="btn_form">Зарегистрироваться</button>
+  </form>
+{% endblock %}
