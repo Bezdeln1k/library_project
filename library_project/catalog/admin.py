@@ -1,4 +1,4 @@
-# Давайте настроим административный интерфейс для моделей Book и BorrowedBook в Django
+# Настроим административный интерфейс для моделей Book и BorrowedBook в Django
 
 from django.contrib import admin
 from .models import Book, BorrowedBook
@@ -34,7 +34,7 @@ class BorrowedBookAdminForm(forms.ModelForm):
 
 class BookAdmin(admin.ModelAdmin):
     actions = [make_available, make_unavailable]
-    list_display = ('title', 'author', 'publication_year', 'is_available')
+    list_display = ('title', 'author', 'inventory_number', 'isbn', 'publication_year', 'is_available')
     list_filter = ('publication_year', 'author')
     search_fields = ('title', 'author')
 
@@ -64,6 +64,6 @@ class BorrowedBookAdmin(admin.ModelAdmin):
 admin.site.register(Book, BookAdmin)
 admin.site.register(BorrowedBook, BorrowedBookAdmin)
 
-# Эти настройки администратора позволяют легко управлять книгами и заимствованиями в админ-панели Django.
+# Эти настройки администратора позволяют управлять каталогом книг и выданными книгами в админ-панели Django.
 # `list_display` настраивает колонки, которые будут отображаться в списке объектов модели.
 # `list_filter` и `search_fields` добавляют возможности фильтрации и поиска по указанным полям.

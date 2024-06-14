@@ -21,5 +21,6 @@ from django.shortcuts import redirect
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
+    path('catalog/', include('catalog.urls')),
     path('', lambda request: redirect('login', permanent=False)),  # Редирект с корневого URL на страницу входа
 ]

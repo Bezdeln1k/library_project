@@ -1,0 +1,149 @@
+body {
+    background-color: #f7f3ef;
+}
+
+.header{
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 1180px;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+}
+
+.logo-image {
+    width: auto;
+    height: 120px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.logo-text {
+    color: #cd2227;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.navmenu {
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+    background-color: #aa4c00;
+    border-radius: 8px;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    max-width: 1180px;
+    height: 60px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 10px 0;
+    display: flex;
+}
+
+.menu_link {
+    color: #ffffff;
+    font-size: 18px;
+    line-height: 1.1;
+    text-decoration: none;
+}
+
+.menu_link:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.footer {
+    background-color: #1a232e;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    margin-top: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    color: #fff;
+}
+
+th {
+    background-color: #656565;
+    color: #fff;
+}
+
+.profile-data {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.form-group {
+    max-width: 500px !important; 
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 40px 40px;
+    margin-bottom: 10rem;
+    box-shadow: -3px -5px 10px rgba(117, 68, 20, .1), 3px 5px 10px rgba(117, 68, 20, .1);
+}
+
+.form-control {
+    border-radius: 8px;
+}
+
+.btn-primary {
+    background-color: #aa4c00;
+    border-color: #aa4c00;
+    border-radius: 8px;
+    padding: 10px 22px;
+    font-size: 16px;
+}
+
+.btn-primary:hover {
+  background-color: #ae5712;
+  border-color: #ae5712;
+}
+
+.btn_form {
+    background-color: #aa4c00;
+    border-color: #aa4c00;
+    border-radius: 8px;
+    width: 100%;
+    padding: 10px 22px;
+    margin-top: 20px;
+    font-size: 18px;
+    color: #fff;
+    display: block;
+}
+
+.btn_form:hover {
+  background-color: #ae5712;
+  border-color: #ae5712;
+}
+
+.btn_form:active {
+  background-color: #ae5712;
+  border-color: #ae5712;
+}
+
+@media (max-width: 991px) {
+.navmenu {
+    grid-column-gap: 8px;
+    grid-row-gap: 8px;
+    flex-flow: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.menu_link {
+    font-size: 16px;
+}
+}

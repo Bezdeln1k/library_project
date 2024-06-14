@@ -1,7 +1,7 @@
 {% extends 'base_generic.html' %}
 {% block content %}
   <h2 class="text-center" style="padding-bottom: 20px; font-weight: bold;">РЕГИСТРАЦИЯ ЧИТАТЕЛЯ В СИСТЕМЕ</h2>
-  <p class="text-center" style="padding-bottom: 20px; font-weight: bold;">Все поля обязательны для заполнения</p>
+
   <form method="post" class="form-group">
     {% csrf_token %}
     <div class="mb-3">
@@ -94,6 +94,20 @@
         <div class="alert alert-danger">{{ form.reader_card.errors.as_text }}</div>
       {% endif %}
     </div>
+    <div class="mb-3 form-check">
+      <input type="checkbox" class="form-check-input" id="agreementCheckbox" required>
+      <label class="form-check-label" for="agreementCheckbox">
+        Принимаю <a href="https://agalibr.ru/polzovatelskoe-soglashenie/" target="_blank">пользовательское соглашение</a> и <a href="https://agalibr.ru/politika-konfidentsialnosti/" target="_blank">политику конфиденциальности</a>
+      </label>
+    </div>
     <button type="submit" class="btn_form">Зарегистрироваться</button>
   </form>
+{% endblock %}
+
+{% block extra_head %}
+  <script>
+    $(document).ready(function(){
+      $('#id_phone').inputmask("+7 (999) 999-9999"); // Маска для телефонного номера
+    });
+  </script>
 {% endblock %}

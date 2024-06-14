@@ -27,7 +27,7 @@ def login_view(request):
             login(request, user)
             return redirect('borrowed-books')
         else:
-            return render(request, 'registration/login.html', {'error': 'Invalid username or password'})
+            return render(request, 'registration/login.html', {'error': 'Неверное имя пользователя или пароль'})
     else:
         return render(request, 'registration/login.html')
 

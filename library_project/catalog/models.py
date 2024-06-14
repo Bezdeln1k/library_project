@@ -8,9 +8,11 @@ class Book(models.Model):
     author = models.CharField(max_length=200, verbose_name='Автор')
     publication_year = models.IntegerField(verbose_name='Год публикации')
     is_available = models.BooleanField(default=True, verbose_name='В наличии')
+    inventory_number = models.CharField(max_length=50, unique=True, null=True, blank=True, verbose_name='Инвентарный номер')
+    isbn = models.CharField(max_length=20, unique=False, null=True, blank=True, verbose_name='ISBN')
 
     class Meta:
-        verbose_name = 'Книгу'
+        verbose_name = 'Книга'
         verbose_name_plural = 'Книги'
 
     def __str__(self):
@@ -26,8 +28,8 @@ class BorrowedBook(models.Model):
     is_returned = models.BooleanField(default=False, verbose_name='Возвращена')
 
     class Meta:
-        verbose_name = 'Заимствованную книгу'
-        verbose_name_plural = 'Заимствованные книги'
+        verbose_name = 'Выданная книга'
+        verbose_name_plural = 'Выданные книги'
     
     def can_renew(self):
         return self.renewal_count < 1  # Разрешить продление, если оно было меньше 1 раза

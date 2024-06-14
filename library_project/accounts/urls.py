@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import CustomLogoutView, SignUpView, login_view, borrowed_books_view, renew_book_view
+from catalog.views import upload_xml
 
 urlpatterns = [
     path('signup/', SignUpView.as_view(), name='signup'),  # Указание имени маршрута

@@ -1,0 +1,14 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Моя настраиваемая админка | {{ title }}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">Моя настраиваемая админка</a></h1>
+{% endblock %}
+
+{% block nav-global %}
+<ul id="user-tools">
+    <li><a href="/">Просмотреть сайт</a></li>
+    <li><a href="{% url 'admin:logout' %}">Выйти</a></li>
+</ul>
+{% endblock %}

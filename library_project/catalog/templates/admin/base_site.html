@@ -1,0 +1,14 @@
+{% extends "admin/base.html" %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">My Site Admin</a></h1>
+{% endblock %}
+
+{% block nav-global %}
+<nav>
+    <ul class="nav nav-global">
+        <li><a href="{% url 'admin:index' %}">Home</a></li>
+        <li><a href="/custom-url/">Custom Menu Item</a></li>
+    </ul>
+</nav>
+{% endblock %}

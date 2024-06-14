@@ -13,7 +13,7 @@ class SignUpForm(UserCreationForm):
         max_length=30, 
         required=True, 
         label='Логин:', 
-        help_text='В качестве логина укажите идентификатор (номер) читательского билета регистрируемого читателя',
+        # help_text='В качестве логина укажите идентификатор (номер) читательского билета регистрируемого читателя',
         widget=forms.TextInput(attrs={'class': 'form-control'}))
     email = forms.EmailField(
         max_length=254, 
@@ -30,10 +30,15 @@ class SignUpForm(UserCreationForm):
         label='Фамилия:',
         widget=forms.TextInput(attrs={'class': 'form-control'}))
     phone = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control', 
+            'id': 'id_phone',
+            'type': 'tel',
+            'pattern': r'\+7[0-9]{3}[0-9]{3}[0-9]{4}',
+            'placeholder': '+71234567890'}),
         max_length=15, 
         required=True, 
-        label='Телефон:',
-        widget=forms.TextInput(attrs={'class': 'form-control'}))
+        label='Телефон:')
     address = forms.CharField(
         max_length=255, 
         required=True, 
@@ -45,7 +50,7 @@ class SignUpForm(UserCreationForm):
         widget=forms.NumberInput(attrs={'class': 'form-control'}))
     password1 = forms.CharField(
         label='Пароль:',
-        help_text='В качестве пароля укажите фамилию читателя русскими буквами в нижнем регистре',
+        # help_text='В качестве пароля укажите фамилию читателя русскими буквами в нижнем регистре',
         widget=forms.PasswordInput(attrs={'class': 'form-control'}),
         validators=[validate_password],
         strip=False
