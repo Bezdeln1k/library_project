@@ -4,6 +4,12 @@ from django.contrib import admin
 from .models import Book, BorrowedBook
 from django import forms
 from accounts.models import UserProfile
+from django.shortcuts import render
+from django.urls import path
+from django.http import HttpResponseRedirect
+from .forms import UploadXMLForm
+from .models import Book
+import xml.etree.ElementTree as ET
 
 def make_available(modeladmin, request, queryset):
     queryset.update(is_available=True)
@@ -34,9 +40,70 @@ class BorrowedBookAdminForm(forms.ModelForm):
 
 class BookAdmin(admin.ModelAdmin):
     actions = [make_available, make_unavailable]
-    list_display = ('title', 'author', 'publication_year', 'is_available')
+    list_display = ('title', 'author', 'inventory_number', 'isbn', 'publication_year', 'is_available')
     list_filter = ('publication_year', 'author')
     search_fields = ('title', 'author')
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path('import-xml/', self.admin_site.admin_view(self.import_xml))
+        ]
+        return custom_urls + urls
+
+    def import_xml(self, request):
+        if request.method == 'POST':
+            form = UploadXMLForm(request.POST, request.FILES)
+            if form.is_valid():
+                xml_file = request.FILES['xml_file']
+                tree = ET.parse(xml_file)
+                root = tree.getroot()
+
+                for record in root.findall('record'):
+                    title = author = ''
+                    publication_year = ''
+                    isbn = ''
+                    inventory_numbers = []
+
+                    for field in record.findall('field'):
+                        if field.get('tag') == '200':
+                            title = field.find('./subfield[@code="A"]').text if field.find('./subfield[@code="A"]') is not None else ''
+                            author = field.find('./subfield[@code="F"]').text if field.find('./subfield[@code="F"]') is not None else ''
+
+                        elif field.get('tag') == '210':
+                            publication_year_text = field.find('./subfield[@code="D"]').text if field.find('./subfield[@code="D"]') is not None else ''
+                            publication_year = publication_year_text if publication_year_text.isdigit() else ''
+
+                        elif field.get('tag') == '10':
+                            isbn = field.find('./subfield[@code="A"]').text if field.find('./subfield[@code="A"]') is not None else ''
+
+                        elif field.get('tag') == '910':
+                            inventory_number = field.find('./subfield[@code="B"]').text if field.find('./subfield[@code="B"]') is not None else ''
+                            if inventory_number:
+                                inventory_numbers.append(inventory_number)
+
+                    if not inventory_numbers:
+                        inventory_numbers = ['-']
+
+                    for inventory_number in inventory_numbers:
+                        if not Book.objects.filter(inventory_number=inventory_number).exists():
+                            Book.objects.create(
+                                title=title,
+                                author=author,
+                                publication_year=publication_year,
+                                isbn=isbn,
+                                inventory_number=inventory_number
+                            )
+
+                self.message_user(request, "Книги успешно импортированы")
+                return HttpResponseRedirect("../")
+
+        form = UploadXMLForm()
+        context = dict(
+            self.admin_site.each_context(request),
+            form=form
+        )
+        return render(request, "admin/import_xml.html", context)
 
 class BorrowedBookAdmin(admin.ModelAdmin):
     form = BorrowedBookAdminForm
