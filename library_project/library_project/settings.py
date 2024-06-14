@@ -128,6 +128,9 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Настройка MEDIA_ROOT и MEDIA_URL для загрузки файлов
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
@@ -148,8 +151,47 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = '/accounts/login/'
 
 JAZZMIN_SETTINGS = {
-    "site_title": "Library Admin",
-    "site_header": "Library Management",
+    "site_title": "Админ-панель библиотекаря",
+    "site_header": "Управление библиотекой",
     "welcome_sign": "Добро пожаловать в админ-панель библиотекаря",
     "site_logo": "images/logo_library2.png",
+    "site_brand": "Админ-панель библиотекаря",
+    # "site_logo": None,
+    # "login_logo": None,
+    # "login_logo_dark": None,
+    # "site_icon": None,
+    "copyright": "Агинская краевая библиотека им. Ц.Жамцарано",
+    "search_model": ["auth.User", "catalog.Book", "catalog.BorrowedBook"],
+    "user_avatar": None,
+    "topmenu_links": [
+        {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"name": "Импорт книг из XML", "url": "/admin/catalog/book/import-xml/", "permissions": ["catalog.view_book"]},
+    ],
+    "usermenu_links": [
+        {"name": "Импорт книг из XML", "url": "/admin/catalog/book/import-xml/", "permissions": ["catalog.view_book"]},
+    ],
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "hide_apps": [],
+    "hide_models": [],
+    "order_with_respect_to": ["auth", "catalog"],
+    "custom_links": {
+        "catalog": [
+            {"name": "Импорт книг из XML", "url": "/admin/catalog/book/import-xml/", "icon": "fas fa-book", "permissions": ["catalog.view_book"]},
+        ]
+    },
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+        "catalog": "fas fa-book",
+        "catalog.book": "fas fa-book",
+        "catalog.BorrowedBook": "fas fa-book-reader",
+    },
+    "default_icon_parents": "fas fa-chevron-circle-right",
+    "default_icon_children": "fas fa-circle",
+    "related_modal_active": False,
+    "custom_css": None,
+    "custom_js": None,
+    "show_ui_builder": False,
 }

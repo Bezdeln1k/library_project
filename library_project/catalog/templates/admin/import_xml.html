@@ -1,0 +1,17 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% block content %}
+<h1 style="margin-right: 100px; max-width: 300px;">Импорт книг из XML-файла</h1>
+<div class="form-container" style="margin-top: 20px; max-width: 300px;">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.xml_file.label_tag }}<br>
+            {{ form.xml_file }}
+        </div>
+        <div class="form-group" style="margin-top: 10px;">
+            <button type="submit" class="btn btn-primary">Запустить</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
