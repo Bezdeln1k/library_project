@@ -30,10 +30,15 @@ class SignUpForm(UserCreationForm):
         label='Фамилия:',
         widget=forms.TextInput(attrs={'class': 'form-control'}))
     phone = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control', 
+            'id': 'id_phone',
+            'type': 'tel',
+            'pattern': r'\+7[0-9]{3}[0-9]{3}[0-9]{4}',
+            'placeholder': '+71234567890'}),
         max_length=15, 
         required=True, 
-        label='Телефон:',
-        widget=forms.TextInput(attrs={'class': 'form-control'}))
+        label='Телефон:')
     address = forms.CharField(
         max_length=255, 
         required=True, 
