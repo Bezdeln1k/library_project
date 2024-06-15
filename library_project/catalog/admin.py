@@ -10,6 +10,7 @@ from django.http import HttpResponseRedirect
 from .forms import UploadXMLForm
 from .models import Book
 import xml.etree.ElementTree as ET
+from django.contrib import messages
 
 def make_available(modeladmin, request, queryset):
     queryset.update(is_available=True)
@@ -31,7 +32,6 @@ class BorrowedBookAdminForm(forms.ModelForm):
         model = BorrowedBook
         fields = '__all__'
         widgets = {
-            # 'borrower': forms.Select(attrs={'size': '20'}), 
             'borrower_info': forms.TextInput(attrs={'size': '20'}), 
             'reader_card_display': forms.TextInput(attrs={'size': '20'}),
             'borrowed_date': forms.DateInput(attrs={'type': 'date'}),
@@ -56,47 +56,54 @@ class BookAdmin(admin.ModelAdmin):
             form = UploadXMLForm(request.POST, request.FILES)
             if form.is_valid():
                 xml_file = request.FILES['xml_file']
-                tree = ET.parse(xml_file)
-                root = tree.getroot()
+                try:
+                    tree = ET.parse(xml_file)
+                    root = tree.getroot()
 
-                for record in root.findall('record'):
-                    title = author = ''
-                    publication_year = ''
-                    isbn = ''
-                    inventory_numbers = []
+                    for record in root.findall('record'):
+                        title = author = ''
+                        publication_year = ''
+                        isbn = ''
+                        inventory_numbers = []
 
-                    for field in record.findall('field'):
-                        if field.get('tag') == '200':
-                            title = field.find('./subfield[@code="A"]').text if field.find('./subfield[@code="A"]') is not None else ''
-                            author = field.find('./subfield[@code="F"]').text if field.find('./subfield[@code="F"]') is not None else ''
+                        for field in record.findall('field'):
+                            if field.get('tag') == '200':
+                                title = field.find('./subfield[@code="A"]').text if field.find('./subfield[@code="A"]') is not None else ''
+                                author = field.find('./subfield[@code="F"]').text if field.find('./subfield[@code="F"]') is not None else ''
 
-                        elif field.get('tag') == '210':
-                            publication_year_text = field.find('./subfield[@code="D"]').text if field.find('./subfield[@code="D"]') is not None else ''
-                            publication_year = publication_year_text if publication_year_text.isdigit() else ''
+                            elif field.get('tag') == '210':
+                                publication_year_text = field.find('./subfield[@code="D"]').text if field.find('./subfield[@code="D"]') is not None else ''
+                                publication_year = publication_year_text if publication_year_text.isdigit() else ''
 
-                        elif field.get('tag') == '10':
-                            isbn = field.find('./subfield[@code="A"]').text if field.find('./subfield[@code="A"]') is not None else ''
+                            elif field.get('tag') == '10':
+                                isbn = field.find('./subfield[@code="A"]').text if field.find('./subfield[@code="A"]') is not None else ''
 
-                        elif field.get('tag') == '910':
-                            inventory_number = field.find('./subfield[@code="B"]').text if field.find('./subfield[@code="B"]') is not None else ''
-                            if inventory_number:
-                                inventory_numbers.append(inventory_number)
+                            elif field.get('tag') == '910':
+                                inventory_number = field.find('./subfield[@code="B"]').text if field.find('./subfield[@code="B"]') is not None else ''
+                                if inventory_number:
+                                    inventory_numbers.append(inventory_number)
 
-                    if not inventory_numbers:
-                        inventory_numbers = ['-']
+                        if not inventory_numbers:
+                            inventory_numbers = ['-']
 
-                    for inventory_number in inventory_numbers:
-                        if not Book.objects.filter(inventory_number=inventory_number).exists():
-                            Book.objects.create(
-                                title=title,
-                                author=author,
-                                publication_year=publication_year,
-                                isbn=isbn,
-                                inventory_number=inventory_number
+                        for inventory_number in inventory_numbers:
+                            book, created = Book.objects.update_or_create(
+                                inventory_number=inventory_number,
+                                defaults={
+                                    'title': title,
+                                    'author': author,
+                                    'publication_year': publication_year,
+                                    'isbn': isbn,
+                                }
                             )
 
-                self.message_user(request, "Книги успешно импортированы")
-                return HttpResponseRedirect("../")
+                    messages.success(request, "Книги успешно импортированы")
+                    return HttpResponseRedirect("../")
+
+                except ET.ParseError as e:
+                    messages.error(request, f"Ошибка парсинга XML: {e}")
+                except Exception as e:
+                    messages.error(request, f"Произошла ошибка: {e}")
 
         form = UploadXMLForm()
         context = dict(
@@ -104,6 +111,7 @@ class BookAdmin(admin.ModelAdmin):
             form=form
         )
         return render(request, "admin/import_xml.html", context)
+
 
 class BorrowedBookAdmin(admin.ModelAdmin):
     form = BorrowedBookAdminForm
