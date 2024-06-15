@@ -48,8 +48,6 @@ def borrowed_books_view(request):
         'profile': user_profile
     }
     return render(request, 'borrowed_books.html', context)
-    #return render(request, 'borrowed_books.html', {'all_borrowed_books': all_borrowed_books})
-    #return render(request, 'borrowed_books.html', {'borrowed_books': borrowed_books, 'forms': forms})
 
 @login_required
 def renew_book_view(request, pk):
